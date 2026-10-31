@@ -28,65 +28,78 @@ input:focus-visible { outline: none; border-color: #333; box-shadow: 0 0 0 3px #
 
 /* Home Screen */
 .home { min-height: 100svh; display: flex; align-items: center; justify-content: center; padding: 54px 0; }
-.home-inner { width: 100%; max-width: 620px; text-align: center; }
+.home-inner { width: 100%; max-width: 580px; text-align: center; }
 .wordmark { font-size: 20px; font-weight: 700; letter-spacing: -.6px; color: #57574e; margin: 0 0 12px; }
 .tagline { font-size: 27px; font-weight: 600; letter-spacing: -.7px; line-height: 1.25; color: #20201e; margin: 0 auto 24px; max-width: 500px; text-wrap: balance; }
 .url { width: 100%; height: 60px; border: 1px solid #cfcfca; background: white; border-radius: 10px; padding: 0 20px; font-size: 18px; color: #20201e; transition: border-color .15s; }
 .url::placeholder { color: #92928a; }
 
-.level-row { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 14px 0 6px; }
-.level-select {
-  appearance: none;
-  -webkit-appearance: none;
-  height: 36px;
-  padding: 0 34px 0 13px;
+.cats-stage { position: relative; margin: 28px 0 24px; }
+.level-callout {
+  position: absolute;
+  top: -44px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
   border-radius: 8px;
-  border: 1px solid #cfcfca;
-  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%2357574e' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E") no-repeat right 11px center;
-  font-size: 13.5px;
-  font-weight: 500;
-  color: #20201e;
-  cursor: pointer;
-  transition: border-color .15s, box-shadow .15s;
+  background: #262621;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: popCallout .2s ease-out;
 }
-.level-select.unpicked { color: #737369; }
-.level-select:focus-visible { outline: none; border-color: #333; box-shadow: 0 0 0 3px #20201e12; }
-.level-select.needs-choice { border-color: #c4381c; box-shadow: 0 0 0 3px rgba(196, 56, 28, 0.16); }
+.level-callout:after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #262621;
+}
 
-.cats { display: flex; justify-content: center; align-items: flex-end; gap: 32px; margin: 18px 0 22px; }
-.cat-button { border: 0; background: transparent; padding: 0; color: inherit; border-radius: 14px; text-align: center; transition: opacity .18s, transform .16s; }
-.cat-easy { width: 196px; }
-.cat-demon { width: 262px; }
-.cats.has-selection .cat-button:not(.selected) { opacity: .66; }
-.cats.has-selection .cat-button:not(.selected):hover { opacity: .92; }
+.cats { display: flex; justify-content: center; align-items: flex-start; gap: 30px; }
+.cats.shake { animation: nudge .32s ease; }
+.cat-button {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  border-radius: 14px;
+  text-align: center;
+  transition: transform .2s cubic-bezier(.22, 1, .36, 1), opacity .18s;
+}
+.cats.has-selection .cat-button:not(.selected) { opacity: .62; transform: scale(.96); }
+.cats.has-selection .cat-button:not(.selected):hover { opacity: .9; transform: scale(.99); }
+.cat-button.selected { transform: scale(1.06) translateY(-4px); }
 
-.photo-wrap { position: relative; border-radius: 14px; overflow: hidden; transition: transform .16s, box-shadow .16s; }
-.cat-easy .photo-wrap { width: 196px; height: 196px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); }
-.cat-demon .photo-wrap { width: 262px; height: 262px; box-shadow: 0 14px 32px rgba(168, 38, 18, 0.2); border: 1.5px solid #e2bdb0; }
+.photo-wrap {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform .18s, box-shadow .18s;
+}
 .photo { display: block; width: 100%; height: 100%; object-fit: cover; }
-.cat-button:hover .photo-wrap { transform: translateY(-4px); }
-.cat-easy:hover .photo-wrap { box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14); }
-.cat-demon:hover .photo-wrap { box-shadow: 0 18px 38px rgba(168, 38, 18, 0.28); }
+.cat-button:not(.selected):hover .photo-wrap { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14); }
 .cat-button:active .photo-wrap { transform: scale(.98); }
 
-.cat-easy.selected .photo-wrap { outline: 3px solid #242420; outline-offset: 3px; box-shadow: 0 14px 28px rgba(32, 32, 30, 0.2); }
-.cat-demon.selected .photo-wrap { outline: 3.5px solid #c63618; outline-offset: 3px; border-color: #c63618; box-shadow: 0 18px 40px rgba(198, 54, 24, 0.32); }
+.cat-easy.selected .photo-wrap { outline: 3px solid #242420; outline-offset: 3px; box-shadow: 0 16px 32px rgba(32, 32, 30, 0.22); }
+.cat-demon.selected .photo-wrap { outline: 3px solid #c63618; outline-offset: 3px; box-shadow: 0 18px 36px rgba(198, 54, 24, 0.3); }
 
-.cat-tag {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 4px 9px;
-  border-radius: 999px;
-  font: 700 10.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-  letter-spacing: .4px;
-  text-transform: uppercase;
-  background: rgba(24, 24, 21, 0.78);
-  color: #fff;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-.cat-demon .cat-tag { background: rgba(165, 32, 14, 0.88); border: 1px solid rgba(255, 200, 180, 0.35); }
 .cat-check {
   position: absolute;
   bottom: 10px;
@@ -103,8 +116,7 @@ input:focus-visible { outline: none; border-color: #333; box-shadow: 0 0 0 3px #
 
 .easy-photo { object-position: 50% 50%; }
 .demon-photo { object-position: 50% 60%; }
-.cat-label { display: block; font-size: 19px; line-height: 28px; font-weight: 600; margin: 14px 0 5px; }
-.cat-demon .cat-label { font-size: 23px; font-weight: 700; color: #1b1b18; }
+.cat-label { display: block; font-size: 20px; line-height: 28px; font-weight: 600; margin: 14px 0 5px; }
 .cat-description { display: block; font-size: 13px; color: #77776e; line-height: 1.48; min-height: 39px; }
 
 .consent { font-size: 12.5px; color: #77776e; display: flex; justify-content: center; align-items: center; gap: 8px; line-height: 1.5; margin-bottom: 18px; cursor: pointer; }
@@ -381,6 +393,15 @@ input:focus-visible { outline: none; border-color: #333; box-shadow: 0 0 0 3px #
   50% { transform: scale(1.2); opacity: .65; }
   100% { transform: scale(.95); opacity: 1; }
 }
+@keyframes popCallout {
+  from { opacity: 0; transform: translate(-50%, 6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
 @media (prefers-reduced-motion: reduce) { *, *:before, *:after { animation: none !important; transition: none !important; } }
 @media (max-width: 680px) {
   .recon-grid { grid-template-columns: 1fr; }
@@ -390,14 +411,11 @@ input:focus-visible { outline: none; border-color: #333; box-shadow: 0 0 0 3px #
 @media (max-width: 540px) {
   .home { padding: 35px 0; }
   .tagline { font-size: 21px; margin-bottom: 20px; }
-  .cats { gap: 16px; }
-  .cat-easy, .cat-easy .photo-wrap { width: min(37vw, 156px); }
-  .cat-easy .photo-wrap { height: min(37vw, 156px); }
-  .cat-demon, .cat-demon .photo-wrap { width: min(49vw, 210px); }
-  .cat-demon .photo-wrap { height: min(49vw, 210px); }
+  .cats { gap: 18px; }
+  .cat-button, .photo-wrap { width: min(42vw, 185px); }
+  .photo-wrap { height: min(42vw, 185px); }
   .cat-description { font-size: 11.5px; min-height: 36px; }
-  .cat-label { font-size: 17px; }
-  .cat-demon .cat-label { font-size: 20px; }
+  .cat-label { font-size: 18px; }
   .consent { font-size: 11px; }
   .url { font-size: 16px; }
   .loading h1 { font-size: 24px; }
@@ -421,32 +439,26 @@ input:focus-visible { outline: none; border-color: #333; box-shadow: 0 0 0 3px #
         <label for="target" hidden>Website or GitHub repository URL</label>
         <input class="url" id="target" type="text" inputmode="url" placeholder="https://your-site.com or github.com/owner/repo" autocomplete="url" required aria-label="Website or GitHub repository URL">
 
-        <div class="level-row">
-          <select id="levelSelect" class="level-select unpicked" required aria-label="Choose the level">
-            <option value="" selected disabled>Choose the level</option>
-            <option value="easy">⚔️ Easy — Surface check</option>
-            <option value="demon">🔥 Demon — Full deep recon</option>
-          </select>
-        </div>
-
-        <div id="catsGroup" class="cats">
-          <button id="easyCard" class="cat-button cat-easy" type="button" aria-pressed="false" aria-label="Select Easy level: surface headers, bundles and certificate transparency">
-            <div class="photo-wrap">
-              <img class="photo easy-photo" src="/assets/easy-cat.jpg" alt="Kitten in armor holding a sword">
-              <span id="easyCheck" class="cat-check" hidden>✓ Selected</span>
-            </div>
-            <span class="cat-label">⚔️ Easy</span>
-            <span class="cat-description">Headers, root files &amp; JS bundles</span>
-          </button>
-          <button id="demonCard" class="cat-button cat-demon" type="button" aria-pressed="false" aria-label="Select Demon level: IP/Geo, TLS, DNS, subdomains, live API routes &amp; CVEs">
-            <div class="photo-wrap">
-              <img class="photo demon-photo" src="/assets/demon-cat.jpg" alt="Kitten on a fiery demon throne">
-              <span class="cat-tag">🔥 Deep Recon</span>
-              <span id="demonCheck" class="cat-check" hidden>✓ Selected</span>
-            </div>
-            <span class="cat-label">🔥 Demon</span>
-            <span class="cat-description">IP/Geo, TLS, DNS, API routes &amp; CVEs</span>
-          </button>
+        <div class="cats-stage">
+          <div id="levelPrompt" class="level-callout" role="alert" hidden>⚠️ Choose the level</div>
+          <div id="catsGroup" class="cats">
+            <button id="easyCard" class="cat-button cat-easy" type="button" aria-pressed="false" aria-label="Select Easy level: surface headers, bundles and certificate transparency">
+              <div class="photo-wrap">
+                <img class="photo easy-photo" src="/assets/easy-cat.jpg" alt="Kitten in armor holding a sword">
+                <span id="easyCheck" class="cat-check" hidden>✓ Selected</span>
+              </div>
+              <span class="cat-label">⚔️ Easy</span>
+              <span class="cat-description">Headers, root files &amp; JS bundles</span>
+            </button>
+            <button id="demonCard" class="cat-button cat-demon" type="button" aria-pressed="false" aria-label="Select Demon level: IP/Geo, TLS, DNS, subdomains, live API routes &amp; CVEs">
+              <div class="photo-wrap">
+                <img class="photo demon-photo" src="/assets/demon-cat.jpg" alt="Kitten on a fiery demon throne">
+                <span id="demonCheck" class="cat-check" hidden>✓ Selected</span>
+              </div>
+              <span class="cat-label">🔥 Demon</span>
+              <span class="cat-description">IP/Geo, TLS, DNS, API routes &amp; CVEs</span>
+            </button>
+          </div>
         </div>
 
         <label class="consent"><input id="consent" type="checkbox" required>I own this target or have permission to assess its security posture.</label>
@@ -1147,12 +1159,10 @@ let selectedLevel = '';
 
 function chooseLevel(val) {
   selectedLevel = val === 'demon' || val === 'easy' ? val : '';
-  $('levelSelect').value = selectedLevel;
-  $('levelSelect').classList.toggle('unpicked', !selectedLevel);
-  $('levelSelect').classList.remove('needs-choice');
-  $('levelSelect').setCustomValidity('');
-
+  $('levelPrompt').hidden = true;
+  $('catsGroup').classList.remove('shake');
   $('catsGroup').classList.toggle('has-selection', Boolean(selectedLevel));
+
   $('easyCard').classList.toggle('selected', selectedLevel === 'easy');
   $('easyCard').setAttribute('aria-pressed', String(selectedLevel === 'easy'));
   $('easyCheck').hidden = selectedLevel !== 'easy';
@@ -1174,7 +1184,6 @@ function chooseLevel(val) {
 
 $('easyCard').onclick = () => chooseLevel('easy');
 $('demonCard').onclick = () => chooseLevel('demon');
-$('levelSelect').onchange = e => chooseLevel(e.target.value);
 $('target').oninput = () => $('target').setCustomValidity('');
 $('consent').onchange = () => $('consent').setCustomValidity('');
 
@@ -1186,11 +1195,10 @@ $('scanForm').onsubmit = e => {
     return;
   }
   if (!selectedLevel) {
-    $('levelSelect').classList.add('needs-choice');
-    $('levelSelect').setCustomValidity('Please choose the level (Easy or Demon) before scanning.');
-    $('levelSelect').reportValidity();
-    $('error').textContent = 'Choose the level (⚔️ Easy or 🔥 Demon) to start the scan.';
-    $('error').hidden = false;
+    $('levelPrompt').hidden = false;
+    $('catsGroup').classList.remove('shake');
+    void $('catsGroup').offsetWidth;
+    $('catsGroup').classList.add('shake');
     return;
   }
   if (!$('consent').checked) {
