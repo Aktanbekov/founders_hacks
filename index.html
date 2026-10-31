@@ -15,7 +15,7 @@
 }
 * { box-sizing: border-box; }
 body { margin: 0; }
-button, input { font: inherit; }
+button, input, select { font: inherit; }
 button { cursor: pointer; }
 button:disabled { cursor: wait; opacity: .55; }
 button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid #486fdb; outline-offset: 5px; }
@@ -27,25 +27,108 @@ input:focus-visible { outline: none; border-color: #333; box-shadow: 0 0 0 3px #
 .screen.results { width: min(100% - 36px, 860px); max-width: 860px; }
 
 /* Home Screen */
-.home { min-height: 100svh; display: flex; align-items: center; justify-content: center; padding: 60px 0; }
-.home-inner { width: 100%; max-width: 560px; text-align: center; }
+.home { min-height: 100svh; display: flex; align-items: center; justify-content: center; padding: 54px 0; }
+.home-inner { width: 100%; max-width: 620px; text-align: center; }
 .wordmark { font-size: 20px; font-weight: 700; letter-spacing: -.6px; color: #57574e; margin: 0 0 12px; }
-.tagline { font-size: 27px; font-weight: 600; letter-spacing: -.7px; line-height: 1.25; color: #20201e; margin: 0 auto 26px; max-width: 500px; text-wrap: balance; }
+.tagline { font-size: 27px; font-weight: 600; letter-spacing: -.7px; line-height: 1.25; color: #20201e; margin: 0 auto 24px; max-width: 500px; text-wrap: balance; }
 .url { width: 100%; height: 60px; border: 1px solid #cfcfca; background: white; border-radius: 10px; padding: 0 20px; font-size: 18px; color: #20201e; transition: border-color .15s; }
 .url::placeholder { color: #92928a; }
 
-.cats { display: flex; justify-content: center; gap: 28px; margin: 26px 0 24px; }
-.cat-button { width: 220px; border: 0; background: transparent; padding: 0; color: inherit; border-radius: 12px; }
-.photo { display: block; width: 220px; height: 220px; object-fit: cover; border-radius: 12px; transition: transform .16s, box-shadow .16s; }
-.cat-button:hover .photo { transform: translateY(-4px); box-shadow: 0 10px 24px #0002; }
-.cat-button:active .photo { transform: scale(.97); }
+.level-row { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 14px 0 6px; }
+.level-select {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 36px;
+  padding: 0 34px 0 13px;
+  border-radius: 8px;
+  border: 1px solid #cfcfca;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%2357574e' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E") no-repeat right 11px center;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #20201e;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+.level-select.unpicked { color: #737369; }
+.level-select:focus-visible { outline: none; border-color: #333; box-shadow: 0 0 0 3px #20201e12; }
+.level-select.needs-choice { border-color: #c4381c; box-shadow: 0 0 0 3px rgba(196, 56, 28, 0.16); }
+
+.cats { display: flex; justify-content: center; align-items: flex-end; gap: 32px; margin: 18px 0 22px; }
+.cat-button { border: 0; background: transparent; padding: 0; color: inherit; border-radius: 14px; text-align: center; transition: opacity .18s, transform .16s; }
+.cat-easy { width: 196px; }
+.cat-demon { width: 262px; }
+.cats.has-selection .cat-button:not(.selected) { opacity: .66; }
+.cats.has-selection .cat-button:not(.selected):hover { opacity: .92; }
+
+.photo-wrap { position: relative; border-radius: 14px; overflow: hidden; transition: transform .16s, box-shadow .16s; }
+.cat-easy .photo-wrap { width: 196px; height: 196px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); }
+.cat-demon .photo-wrap { width: 262px; height: 262px; box-shadow: 0 14px 32px rgba(168, 38, 18, 0.2); border: 1.5px solid #e2bdb0; }
+.photo { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cat-button:hover .photo-wrap { transform: translateY(-4px); }
+.cat-easy:hover .photo-wrap { box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14); }
+.cat-demon:hover .photo-wrap { box-shadow: 0 18px 38px rgba(168, 38, 18, 0.28); }
+.cat-button:active .photo-wrap { transform: scale(.98); }
+
+.cat-easy.selected .photo-wrap { outline: 3px solid #242420; outline-offset: 3px; box-shadow: 0 14px 28px rgba(32, 32, 30, 0.2); }
+.cat-demon.selected .photo-wrap { outline: 3.5px solid #c63618; outline-offset: 3px; border-color: #c63618; box-shadow: 0 18px 40px rgba(198, 54, 24, 0.32); }
+
+.cat-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font: 700 10.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  background: rgba(24, 24, 21, 0.78);
+  color: #fff;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.cat-demon .cat-tag { background: rgba(165, 32, 14, 0.88); border: 1px solid rgba(255, 200, 180, 0.35); }
+.cat-check {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  background: #242420;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+.cat-demon .cat-check { background: #c63618; }
+
 .easy-photo { object-position: 50% 50%; }
 .demon-photo { object-position: 50% 60%; }
-.cat-label { display: block; font-size: 20px; font-weight: 600; margin: 14px 0 6px; }
-.cat-description { display: block; font-size: 13px; color: #77776e; line-height: 1.5; }
-.consent { font-size: 12.5px; color: #77776e; display: flex; justify-content: center; align-items: center; gap: 8px; line-height: 1.5; }
+.cat-label { display: block; font-size: 19px; line-height: 28px; font-weight: 600; margin: 14px 0 5px; }
+.cat-demon .cat-label { font-size: 23px; font-weight: 700; color: #1b1b18; }
+.cat-description { display: block; font-size: 13px; color: #77776e; line-height: 1.48; min-height: 39px; }
+
+.consent { font-size: 12.5px; color: #77776e; display: flex; justify-content: center; align-items: center; gap: 8px; line-height: 1.5; margin-bottom: 18px; cursor: pointer; }
 .consent input { accent-color: #333; margin: 0; width: 15px; height: 15px; }
-.error { color: #a32922; font-size: 14px; line-height: 1.6; margin: 18px 0 0; }
+.start-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 230px;
+  height: 48px;
+  padding: 0 26px;
+  border-radius: 10px;
+  border: 1px solid #242420;
+  background: #242420;
+  color: #fff;
+  font-size: 15.5px;
+  font-weight: 600;
+  transition: background .15s, border-color .15s, transform .12s, box-shadow .15s;
+}
+.start-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(32, 32, 30, 0.16); }
+.start-btn.demon-btn { background: #b83216; border-color: #b83216; box-shadow: 0 8px 22px rgba(184, 50, 22, 0.24); }
+.start-btn.demon-btn:hover { background: #a32b12; border-color: #a32b12; }
+.error { color: #a32922; font-size: 14px; line-height: 1.6; margin: 16px 0 0; }
 
 /* Analyzing / Loading Screen */
 .loading { min-height: 100svh; padding: 44px 0 56px; display: flex; align-items: center; justify-content: center; }
@@ -307,11 +390,14 @@ input:focus-visible { outline: none; border-color: #333; box-shadow: 0 0 0 3px #
 @media (max-width: 540px) {
   .home { padding: 35px 0; }
   .tagline { font-size: 21px; margin-bottom: 20px; }
-  .cats { gap: 18px; }
-  .cat-button, .photo { width: min(42vw, 190px); }
-  .photo { height: min(42vw, 190px); }
-  .cat-description { font-size: 11.5px; }
-  .cat-label { font-size: 18px; }
+  .cats { gap: 16px; }
+  .cat-easy, .cat-easy .photo-wrap { width: min(37vw, 156px); }
+  .cat-easy .photo-wrap { height: min(37vw, 156px); }
+  .cat-demon, .cat-demon .photo-wrap { width: min(49vw, 210px); }
+  .cat-demon .photo-wrap { height: min(49vw, 210px); }
+  .cat-description { font-size: 11.5px; min-height: 36px; }
+  .cat-label { font-size: 17px; }
+  .cat-demon .cat-label { font-size: 20px; }
   .consent { font-size: 11px; }
   .url { font-size: 16px; }
   .loading h1 { font-size: 24px; }
@@ -331,22 +417,40 @@ input:focus-visible { outline: none; border-color: #333; box-shadow: 0 0 0 3px #
     <div class="home-inner">
       <div class="wordmark">🐾 sitegrade</div>
       <h1 class="tagline">Check your AI slop for holes your AI left behind.</h1>
-      <form id="scanForm">
+      <form id="scanForm" novalidate>
         <label for="target" hidden>Website or GitHub repository URL</label>
         <input class="url" id="target" type="text" inputmode="url" placeholder="https://your-site.com or github.com/owner/repo" autocomplete="url" required aria-label="Website or GitHub repository URL">
-        <div class="cats">
-          <button class="cat-button" type="submit" name="mode" value="easy" aria-label="Easy: surface headers, bundles and certificate transparency">
-            <img class="photo easy-photo" src="/assets/easy-cat.jpg" alt="Kitten in armor holding a sword">
+
+        <div class="level-row">
+          <select id="levelSelect" class="level-select unpicked" required aria-label="Choose the level">
+            <option value="" selected disabled>Choose the level</option>
+            <option value="easy">⚔️ Easy — Surface check</option>
+            <option value="demon">🔥 Demon — Full deep recon</option>
+          </select>
+        </div>
+
+        <div id="catsGroup" class="cats">
+          <button id="easyCard" class="cat-button cat-easy" type="button" aria-pressed="false" aria-label="Select Easy level: surface headers, bundles and certificate transparency">
+            <div class="photo-wrap">
+              <img class="photo easy-photo" src="/assets/easy-cat.jpg" alt="Kitten in armor holding a sword">
+              <span id="easyCheck" class="cat-check" hidden>✓ Selected</span>
+            </div>
             <span class="cat-label">⚔️ Easy</span>
             <span class="cat-description">Headers, root files &amp; JS bundles</span>
           </button>
-          <button class="cat-button" type="submit" name="mode" value="demon" aria-label="Demon: IP/Geo, TLS, DNS, subdomains, live API routes &amp; CVEs">
-            <img class="photo demon-photo" src="/assets/demon-cat.jpg" alt="Kitten on a fiery demon throne">
+          <button id="demonCard" class="cat-button cat-demon" type="button" aria-pressed="false" aria-label="Select Demon level: IP/Geo, TLS, DNS, subdomains, live API routes &amp; CVEs">
+            <div class="photo-wrap">
+              <img class="photo demon-photo" src="/assets/demon-cat.jpg" alt="Kitten on a fiery demon throne">
+              <span class="cat-tag">🔥 Deep Recon</span>
+              <span id="demonCheck" class="cat-check" hidden>✓ Selected</span>
+            </div>
             <span class="cat-label">🔥 Demon</span>
             <span class="cat-description">IP/Geo, TLS, DNS, API routes &amp; CVEs</span>
           </button>
         </div>
+
         <label class="consent"><input id="consent" type="checkbox" required>I own this target or have permission to assess its security posture.</label>
+        <button id="submitScan" type="submit" class="start-btn">Audit target →</button>
         <p id="error" class="error" role="alert" hidden></p>
       </form>
     </div>
@@ -1039,9 +1143,62 @@ function showResult(data) {
   screen('results');
 }
 
+let selectedLevel = '';
+
+function chooseLevel(val) {
+  selectedLevel = val === 'demon' || val === 'easy' ? val : '';
+  $('levelSelect').value = selectedLevel;
+  $('levelSelect').classList.toggle('unpicked', !selectedLevel);
+  $('levelSelect').classList.remove('needs-choice');
+  $('levelSelect').setCustomValidity('');
+
+  $('catsGroup').classList.toggle('has-selection', Boolean(selectedLevel));
+  $('easyCard').classList.toggle('selected', selectedLevel === 'easy');
+  $('easyCard').setAttribute('aria-pressed', String(selectedLevel === 'easy'));
+  $('easyCheck').hidden = selectedLevel !== 'easy';
+
+  $('demonCard').classList.toggle('selected', selectedLevel === 'demon');
+  $('demonCard').setAttribute('aria-pressed', String(selectedLevel === 'demon'));
+  $('demonCheck').hidden = selectedLevel !== 'demon';
+
+  $('submitScan').classList.toggle('demon-btn', selectedLevel === 'demon');
+  $('submitScan').textContent =
+    selectedLevel === 'demon'
+      ? '🔥 Start Demon Scan →'
+      : selectedLevel === 'easy'
+      ? '⚔️ Start Easy Scan →'
+      : 'Audit target →';
+
+  if (selectedLevel) $('error').hidden = true;
+}
+
+$('easyCard').onclick = () => chooseLevel('easy');
+$('demonCard').onclick = () => chooseLevel('demon');
+$('levelSelect').onchange = e => chooseLevel(e.target.value);
+$('target').oninput = () => $('target').setCustomValidity('');
+$('consent').onchange = () => $('consent').setCustomValidity('');
+
 $('scanForm').onsubmit = e => {
   e.preventDefault();
-  startScan(e.submitter?.value === 'demon' ? 'demon' : 'easy');
+  if (!$('target').value.trim()) {
+    $('target').setCustomValidity('Enter a public website or GitHub repository URL.');
+    $('target').reportValidity();
+    return;
+  }
+  if (!selectedLevel) {
+    $('levelSelect').classList.add('needs-choice');
+    $('levelSelect').setCustomValidity('Please choose the level (Easy or Demon) before scanning.');
+    $('levelSelect').reportValidity();
+    $('error').textContent = 'Choose the level (⚔️ Easy or 🔥 Demon) to start the scan.';
+    $('error').hidden = false;
+    return;
+  }
+  if (!$('consent').checked) {
+    $('consent').setCustomValidity('Confirm that you own this target or have permission to assess it.');
+    $('consent').reportValidity();
+    return;
+  }
+  startScan(selectedLevel);
 };
 $('stopButton').onclick = () => {
   if (controller) {
